@@ -1,0 +1,21 @@
+Playing with starting up Monitor and Need under Docker:
+
+Generic Docker _run_ for <_service_> running on OSX:
+  docker run \
+    --rm \
+    --volume=<_source_directory_>/microservice_workshop/java:/microservice_workshop \
+    --workdir=/microservice_workshop \
+    -it \
+    java:latest \
+        java
+            -cp ./lib/amqp-client-3.6.2.jar:./lib/gson-2.7.jar:./bin \
+            com.nrkei.microservices.car_rental_offer.<_service_name_> \
+                <_rabbitmq_ip_address_> \
+                <_rabbitmq_port_number_>
+
+Combined example Docker _run_ for Monitor:
+  docker run --rm --volume=/Users/fred/src/microservice_workshop/java:/microservice_workshop --workdir=/microservice_workshop -it java:latest java -cp ./lib/amqp-client-3.6.2.jar:./lib/gson-2.7.jar:./bin com.nrkei.microservices.car_rental_offer.Monitor 192.168.99.100 5673
+
+Combined example Docker _run_ for Need:
+  docker run --rm --volume=/Users/fred/src/microservice_workshop/java:/microservice_workshop --workdir=/microservice_workshop -it java:latest java -cp ./lib/amqp-client-3.6.2.jar:./lib/gson-2.7.jar:./bin com.nrkei.microservices.car_rental_offer.Need 192.168.99.100 5673
+
