@@ -9,10 +9,16 @@ import com.nrkei.microservices.rapids_rivers.*;
 import com.nrkei.microservices.rapids_rivers.rabbit_mq.RabbitMqRapids;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.toIntExact;
 
 // Understands the requirement for advertising on a site
 public class Need {
+
+    private static boolean isMember = false; // To generate member every second times
 
     public static void main(String[] args) {
         String host = args[0];
@@ -37,8 +43,12 @@ public class Need {
 
     private static Packet needPacket() {
         HashMap<String, Object> jsonMap = new HashMap<>();
+
         jsonMap.put("need", "car_rental_offer");
         jsonMap.put("transaction_id", UUID.randomUUID().toString());
+
+        if (isMember) jsonMap.put("user_id", abs(new Random().nextInt() / 10000));
+        isMember = !isMember;
         return new Packet(jsonMap);
     }
 }

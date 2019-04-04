@@ -38,25 +38,13 @@ public class DiscountSolution implements River.PacketListener {
     //System.out.println(String.format(" [x] %s", errors));
   }
 
-  private static Packet solutionPacket(Packet packet) {
+  private Packet solutionPacket(Packet packet) {
     Map<String,Object> solution = new HashMap<>();
     Random rand = new Random();
     rand.setSeed(System.currentTimeMillis());
     solution.put("additional_revenue", abs(rand.nextInt()) % 30);
     solution.put("likelyhood", rand.nextDouble() );
     solution.put("title", "Discount car" );
-    packet.put("solution", solution);
-
-    return packet;
-  }
-
-  private static Packet randomSolutionPacket(Packet packet) {
-    Map<String,Object> solution = new HashMap<>();
-    Random rand = new Random();
-    rand.setSeed(System.currentTimeMillis());
-    solution.put("additional_revenue", abs(rand.nextInt()) % 50);
-    solution.put("likelyhood", rand.nextDouble() );
-    solution.put("title", "discount car" );
     packet.put("solution", solution);
 
     return packet;
