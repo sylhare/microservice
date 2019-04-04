@@ -7,6 +7,10 @@ import com.nrkei.microservices.rapids_rivers.River;
 import com.nrkei.microservices.rapids_rivers.rabbit_mq.RabbitMqRapids;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import static java.lang.Math.abs;
 
 public class DiscountSolution implements River.PacketListener {
 
@@ -18,25 +22,54 @@ public class DiscountSolution implements River.PacketListener {
     final River river = new River(rapidsConnection);
 
     river.requireValue("need", "car_rental_offer");  // listen for this offer
+    river.forbid("solution");  // listen for this offer
     river.register(new DiscountSolution());
   }
 
   @Override
   public void packet(RapidsConnection connection, Packet packet, PacketProblems warnings) {
-    String jsonMessage = solutionPacket().toJson();
+    String jsonMessage = solutionPacket(packet).toJson();
     System.out.println(String.format(" [<] %s", jsonMessage));
     connection.publish(jsonMessage);
   }
 
   @Override
   public void onError(RapidsConnection connection, PacketProblems errors) {
-//    System.out.println(String.format(" [x] %s", errors));
+    //System.out.println(String.format(" [x] %s", errors));
   }
 
-  private static Packet solutionPacket() {
-    HashMap<String, Object> jsonMap = new HashMap<>();
-    jsonMap.put("solution", "car from discount");
-    jsonMap.put("value", "1");
-    return new Packet(jsonMap);
+  private static Packet solutionPacket(Packet packet) {
+    Map<String,Object> solution = new HashMap<>();
+    Random rand = new Random();
+    rand.setSeed(System.currentTimeMillis());
+    solution.put("additional_revenue", abs(rand.nextInt()) % 30);
+    solution.put("likelyhood", rand.nextDouble() );
+    solution.put("title", "Discount car" );
+    packet.put("solution", solution);
+
+    return packet;
   }
+
+  private static Packet randomSolutionPacket(Packet packet) {
+    Map<String,Object> solution = new HashMap<>();
+    Random rand = new Random();
+    rand.setSeed(System.currentTimeMillis());
+    solution.put("additional_revenue", abs(rand.nextInt()) % 50);
+    solution.put("likelyhood", rand.nextDouble() );
+    solution.put("title", "discount car" );
+    packet.put("solution", solution);
+
+    return packet;
+  }
+
+  //  }
+  //    return packet.put(solution);
+  //    solution.put("solution",  attributes);
+  //    attributes.put("likelyhood", 2.0);
+  //    attributes.put("additional_revenue", "a discount car" );
+  //    attributes.put("title", "a discount car" );
+  //    Map<String, Object> attributes = new HashMap<>();
+  //    Map<String, Object> solution = new HashMap<>();
+  //  private Packet randomSolutionPacket(Packet packet) {
+
 }

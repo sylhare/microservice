@@ -9,6 +9,7 @@ import com.nrkei.microservices.rapids_rivers.*;
 import com.nrkei.microservices.rapids_rivers.rabbit_mq.RabbitMqRapids;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 // Understands the requirement for advertising on a site
 public class Need {
@@ -37,6 +38,7 @@ public class Need {
     private static Packet needPacket() {
         HashMap<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("need", "car_rental_offer");
+        jsonMap.put("transaction_id", UUID.randomUUID().toString());
         return new Packet(jsonMap);
     }
 }
