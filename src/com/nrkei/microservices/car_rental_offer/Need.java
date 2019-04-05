@@ -18,8 +18,6 @@ import static java.lang.Math.toIntExact;
 // Understands the requirement for advertising on a site
 public class Need {
 
-    private static boolean isMember = false; // To generate member every second times
-
     public static void main(String[] args) {
         String host = args[0];
         String port = args[1];
@@ -47,8 +45,7 @@ public class Need {
         jsonMap.put("need", "car_rental_offer");
         jsonMap.put("transaction_id", UUID.randomUUID().toString());
 
-        if (isMember) jsonMap.put("user_id", abs(new Random().nextInt() / 10000));
-        isMember = !isMember;
+        if (new Random().nextBoolean()) jsonMap.put("user_id", abs(new Random().nextInt() / 10000));
         return new Packet(jsonMap);
     }
 }

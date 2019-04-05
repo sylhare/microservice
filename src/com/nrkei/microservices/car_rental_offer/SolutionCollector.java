@@ -30,6 +30,18 @@ public class SolutionCollector implements River.PacketListener {
     river.register(new SolutionCollector());         // Hook up to the river to start receiving traffic
   }
 
+  private static Packet packet(Packet packet) {
+    Map<String, Object> solution = new HashMap<>();
+    Random rand = new Random();
+    rand.setSeed(System.currentTimeMillis());
+    solution.put("additional_revenue", abs(rand.nextInt()) % 30);
+    solution.put("likelyhood", rand.nextDouble());
+    solution.put("title", "a discount car");
+    packet.put("solution", solution);
+
+    return packet;
+  }
+
   @Override
   public void packet(RapidsConnection connection, Packet packet, PacketProblems warnings) {
     StringMap solution = (StringMap) packet.get("solution");
@@ -57,21 +69,8 @@ public class SolutionCollector implements River.PacketListener {
     // nothing
   }
 
-
   private Map<String, Object> selectBestSolution(Map<String, Object> challenger, Map<String, Object> champion) {
     return (double) champion.get("likelyhood") > (double) challenger.get("likelyhood") ? champion : challenger;
-  }
-
-  private static Packet packet(Packet packet) {
-    Map<String, Object> solution = new HashMap<>();
-    Random rand = new Random();
-    rand.setSeed(System.currentTimeMillis());
-    solution.put("additional_revenue", abs(rand.nextInt()) % 30);
-    solution.put("likelyhood", rand.nextDouble());
-    solution.put("title", "a discount car");
-    packet.put("solution", solution);
-
-    return packet;
   }
 }
 //

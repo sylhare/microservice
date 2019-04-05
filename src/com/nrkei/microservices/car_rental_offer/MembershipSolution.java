@@ -14,6 +14,8 @@ import static java.lang.Math.abs;
 
 public class MembershipSolution implements River.PacketListener {
 
+  public static String memberTier = "member_tier";
+
     public static void main(String[] args) {
       String host = args[0];
       String port = args[1];
@@ -22,7 +24,7 @@ public class MembershipSolution implements River.PacketListener {
       final River river = new River(rapidsConnection);
 
       river.requireValue("need", "car_rental_offer");  // listen for this offer
-      river.require("member_tier");  // listen for this offer
+      river.require(memberTier);  // listen for this offer
       river.forbid("solution");  // listen for this offer
       river.register(new com.nrkei.microservices.car_rental_offer.DiscountSolution());
     }
@@ -42,20 +44,21 @@ public class MembershipSolution implements River.PacketListener {
     private Packet solutionPacket(Packet packet) {
       Map<String,Object> solution = new HashMap<>();
       Random rand = new Random();
+      String packetMemberTier = (String) packet.get(memberTier);
       Integer revenueFromMember = 5;
       Double likelyhoodFromMember = 0.5;
 
-      if (packet.get("member_tier").equals("silver")) {
+      if (packetMemberTier.equals("silver")) {
         revenueFromMember += 10;
         likelyhoodFromMember = 0.3;
       }
 
-      if (packet.get("member_tier").equals("gold")) {
+      if (packetMemberTier.equals("gold")) {
         revenueFromMember += 30;
         likelyhoodFromMember = 0.5;
       }
 
-      if (packet.get("member_tier").equals("platinum")) {
+      if (packetMemberTier.equals("platinum")) {
         revenueFromMember += 50;
         likelyhoodFromMember = 0.9;
       }
