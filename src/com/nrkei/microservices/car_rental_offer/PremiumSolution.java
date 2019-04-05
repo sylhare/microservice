@@ -9,21 +9,24 @@ import com.nrkei.microservices.rapids_rivers.rabbit_mq.RabbitMqRapids;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import static java.lang.Math.abs;
 
 public class PremiumSolution implements River.PacketListener {
 
+  private static String solutionID = UUID.randomUUID().toString();
+
   public static void main(String[] args) {
     String host = args[0];
     String port = args[1];
 
-    final RapidsConnection rapidsConnection = new RabbitMqRapids("monitor_in_java", host, port);
+    final RapidsConnection rapidsConnection = new RabbitMqRapids("premium_solution", host, port);
     final River river = new River(rapidsConnection);
 
     river.requireValue("need", "car_rental_offer");  // listen for this offer
     river.forbid("solution");  // listen for this offer
-    river.register(new com.nrkei.microservices.car_rental_offer.DiscountSolution());
+    river.register(new PremiumSolution());
   }
 
   @Override
@@ -45,6 +48,7 @@ public class PremiumSolution implements River.PacketListener {
     solution.put("additional_revenue", abs(rand.nextInt()) % 50);
     solution.put("likelyhood", rand.nextDouble());
     solution.put("title", "Premium car");
+    solution.put("solution_id", solutionID);
     packet.put("solution", solution);
 
     return packet;

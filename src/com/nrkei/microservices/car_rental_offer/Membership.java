@@ -13,14 +13,14 @@ public class Membership implements River.PacketListener {
     String host = args[0];
     String port = args[1];
 
-    final RapidsConnection rapidsConnection = new RabbitMqRapids("monitor_in_java", host, port);
+    final RapidsConnection rapidsConnection = new RabbitMqRapids("membership_service", host, port);
     final River river = new River(rapidsConnection);
 
     river.requireValue("need", "car_rental_offer");
     river.require("user_id");
     river.forbid("solution", "member_tier");
 
-    river.register(new com.nrkei.microservices.car_rental_offer.Monitor());
+    river.register(new Membership());
   }
 
   @Override
