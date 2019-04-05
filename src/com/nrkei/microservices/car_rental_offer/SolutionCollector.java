@@ -16,30 +16,19 @@ import static java.lang.Math.abs;
 
 public class SolutionCollector implements River.PacketListener {
 
-  Map<UUID, Double> solutionsMap = new HashMap<>();
+  public static Map<UUID, Double> solutionsMap = new HashMap<>();
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     String host = args[0];
     String port = args[1];
 
-    final RapidsConnection rapidsConnection = new RabbitMqRapids("monitor_in_java", host, port);
+    final RapidsConnection rapidsConnection = new RabbitMqRapids("solution_collector", host, port);
     final River river = new River(rapidsConnection);
     river.require("solution");       // Reject packet unless it has key1 and key2
     river.interestedIn("solution");       // Reject packet unless it has key1 and key2
     river.forbid("best_solution");       // Reject packet unless it has key1 and key2
     river.register(new SolutionCollector());         // Hook up to the river to start receiving traffic
-  }
-
-  private static Packet packet(Packet packet) {
-    Map<String, Object> solution = new HashMap<>();
-    Random rand = new Random();
-    rand.setSeed(System.currentTimeMillis());
-    solution.put("additional_revenue", abs(rand.nextInt()) % 30);
-    solution.put("likelyhood", rand.nextDouble());
-    solution.put("title", "a discount car");
-    packet.put("solution", solution);
-
-    return packet;
+    cleanUp();
   }
 
   @Override
@@ -61,7 +50,6 @@ public class SolutionCollector implements River.PacketListener {
       packet.put("best_solution", solution);
       connection.publish(packet.toJson());
     }
-
   }
 
   @Override
@@ -69,8 +57,28 @@ public class SolutionCollector implements River.PacketListener {
     // nothing
   }
 
+  private static void cleanUp() throws InterruptedException {
+    while(true) {
+      Thread.sleep(10000);
+      solutionsMap = new HashMap<>();
+    }
+  }
+
+
   private Map<String, Object> selectBestSolution(Map<String, Object> challenger, Map<String, Object> champion) {
     return (double) champion.get("likelyhood") > (double) challenger.get("likelyhood") ? champion : challenger;
+  }
+
+  private static Packet packet(Packet packet) {
+    Map<String, Object> solution = new HashMap<>();
+    Random rand = new Random();
+    rand.setSeed(System.currentTimeMillis());
+    solution.put("additional_revenue", abs(rand.nextInt()) % 30);
+    solution.put("likelyhood", rand.nextDouble());
+    solution.put("title", "a discount car");
+    packet.put("solution", solution);
+
+    return packet;
   }
 }
 //
