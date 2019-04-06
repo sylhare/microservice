@@ -1,4 +1,4 @@
-package com.nrkei.microservices.car_rental_offer;
+package com.sylhare.microservices.customer;
 
 import com.nrkei.microservices.rapids_rivers.Packet;
 import com.nrkei.microservices.rapids_rivers.PacketProblems;

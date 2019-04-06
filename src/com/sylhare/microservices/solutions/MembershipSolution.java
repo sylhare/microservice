@@ -1,11 +1,11 @@
-package com.nrkei.microservices.car_rental_offer;
+package com.sylhare.microservices.solutions;
 
 import com.nrkei.microservices.rapids_rivers.Packet;
 import com.nrkei.microservices.rapids_rivers.PacketProblems;
 import com.nrkei.microservices.rapids_rivers.RapidsConnection;
 import com.nrkei.microservices.rapids_rivers.River;
 import com.nrkei.microservices.rapids_rivers.rabbit_mq.RabbitMqRapids;
-import com.sylhare.microservices.Message;
+import com.sylhare.microservices.NeedPacket;
 
 import java.util.Random;
 import java.util.UUID;
@@ -63,7 +63,7 @@ public class MembershipSolution implements River.PacketListener {
         likelyhoodFromMember = 0.6;
       }
 
-      return Message.enrichWithSolution(packet,
+      return NeedPacket.enrichWithSolution(packet,
           baseLikelyhood * likelyhoodFromMember, abs(baseRevenue) % revenueFromMember,
           SOLUTION_ID);
     }

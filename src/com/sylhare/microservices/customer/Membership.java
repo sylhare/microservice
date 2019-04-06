@@ -1,4 +1,4 @@
-package com.nrkei.microservices.car_rental_offer;
+package com.sylhare.microservices.customer;
 
 import com.nrkei.microservices.rapids_rivers.Packet;
 import com.nrkei.microservices.rapids_rivers.PacketProblems;
@@ -39,11 +39,11 @@ public class Membership implements River.PacketListener {
     Double userId = (Double) packet.get("user_id");
     String tier = "standard";
 
-    if (userId % 2 == 0) {
+    if (userId % 3 == 0) {
       tier = "silver";
-    } else if (userId % 3 == 0) {
+    } else if (userId % 7 == 0) {
       tier = "gold";
-    } else if (userId % 5 == 0) {
+    } else if (userId % 11 == 0) {
       tier = "platinum";
     }
 

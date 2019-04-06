@@ -7,6 +7,7 @@ package com.nrkei.microservices.car_rental_offer;
 
 import com.nrkei.microservices.rapids_rivers.*;
 import com.nrkei.microservices.rapids_rivers.rabbit_mq.RabbitMqRapids;
+import com.sylhare.microservices.NeedPacket;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -29,7 +30,7 @@ public class Need {
     public static void publish(RapidsConnection rapidsConnection) {
         try {
             while (true) {
-                String jsonMessage = needPacket().toJson();
+                String jsonMessage = NeedPacket.message();
                 System.out.println(String.format(" [<] %s", jsonMessage));
                 rapidsConnection.publish(jsonMessage);
                 Thread.sleep(5000);
@@ -37,15 +38,5 @@ public class Need {
         } catch (Exception e) {
             throw new RuntimeException("Could not publish message:", e);
         }
-    }
-
-    private static Packet needPacket() {
-        HashMap<String, Object> jsonMap = new HashMap<>();
-
-        jsonMap.put("need", "car_rental_offer");
-        jsonMap.put("transaction_id", UUID.randomUUID().toString());
-
-        if (new Random().nextBoolean()) jsonMap.put("user_id", abs(new Random().nextInt() / 10000));
-        return new Packet(jsonMap);
     }
 }

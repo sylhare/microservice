@@ -1,4 +1,4 @@
-package com.nrkei.microservices.car_rental_offer;
+package com.sylhare.microservices.solutions;
 
 import com.google.gson.internal.StringMap;
 import com.nrkei.microservices.rapids_rivers.Packet;
@@ -9,7 +9,6 @@ import com.nrkei.microservices.rapids_rivers.rabbit_mq.RabbitMqRapids;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 import static java.lang.Math.abs;
