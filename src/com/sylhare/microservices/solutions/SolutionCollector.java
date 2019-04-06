@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static java.lang.Math.abs;
-
 public class SolutionCollector implements River.PacketListener {
 
   private static Map<UUID, Double> solutionsMap = new HashMap<>();
@@ -28,6 +26,13 @@ public class SolutionCollector implements River.PacketListener {
     river.forbid("best_solution");
     river.register(new SolutionCollector());
     cleanUp();
+  }
+
+  private static void cleanUp() throws InterruptedException {
+    while (true) {
+      Thread.sleep(10000);
+      solutionsMap = new HashMap<>();
+    }
   }
 
   /**
@@ -58,12 +63,5 @@ public class SolutionCollector implements River.PacketListener {
   @Override
   public void onError(RapidsConnection connection, PacketProblems errors) {
     // nothing
-  }
-
-  private static void cleanUp() throws InterruptedException {
-    while(true) {
-      Thread.sleep(10000);
-      solutionsMap = new HashMap<>();
-    }
   }
 }

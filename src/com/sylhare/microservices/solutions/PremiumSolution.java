@@ -32,7 +32,7 @@ public class PremiumSolution implements River.PacketListener {
 
   @Override
   public void packet(RapidsConnection connection, Packet packet, PacketProblems warnings) {
-    String jsonMessage = NeedPacket.enrichWithSolution(packet, baseLikelyhhod,abs(baseRevenue) % 50, SOLUTION_ID);
+    String jsonMessage = NeedPacket.enrichWithSolution(packet, baseLikelyhhod, abs(baseRevenue) % 50, SOLUTION_ID);
     System.out.println(String.format(" [<] %s", jsonMessage));
     connection.publish(jsonMessage);
   }
