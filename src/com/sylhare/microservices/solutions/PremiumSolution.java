@@ -16,7 +16,7 @@ public class PremiumSolution implements River.PacketListener {
 
   private static String SOLUTION_ID = UUID.randomUUID().toString();
   private int baseRevenue = new Random().nextInt();
-  private Double baseLikelyhhod = new Random().nextDouble();
+  private Double baseLikelihood = new Random().nextDouble();
 
   public static void main(String[] args) {
     String host = args[0];
@@ -32,7 +32,7 @@ public class PremiumSolution implements River.PacketListener {
 
   @Override
   public void packet(RapidsConnection connection, Packet packet, PacketProblems warnings) {
-    String jsonMessage = NeedPacket.enrichWithSolution(packet, baseLikelyhhod, abs(baseRevenue) % 50, SOLUTION_ID);
+    String jsonMessage = NeedPacket.enrichWithSolution(packet, baseLikelihood, abs(baseRevenue) % 50, SOLUTION_ID);
     System.out.println(String.format(" [<] %s", jsonMessage));
     connection.publish(jsonMessage);
   }

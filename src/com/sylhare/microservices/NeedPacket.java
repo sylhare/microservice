@@ -16,7 +16,7 @@ public class NeedPacket {
   public static String enrichWithSolution(Packet needPacket, Double likelyhood, int revenue, String solutionID) {
     Map<String, Object> solution = new HashMap<>();
     solution.put("additional_revenue", revenue);
-    solution.put("likelyhood", likelyhood);
+    solution.put("likelihood", likelyhood);
     solution.put("title", "Discount car");
     solution.put("solution_id", solutionID);
     needPacket.put("solution", solution);

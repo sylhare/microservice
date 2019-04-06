@@ -16,7 +16,7 @@ public class Click implements River.PacketListener {
     String host = args[0];
     String port = args[1];
 
-    final RapidsConnection rapidsConnection = new RabbitMqRapids("reaction_tracker", host, port);
+    final RapidsConnection rapidsConnection = new RabbitMqRapids("click", host, port);
     final River river = new River(rapidsConnection);
 
     river.require("solution_id");

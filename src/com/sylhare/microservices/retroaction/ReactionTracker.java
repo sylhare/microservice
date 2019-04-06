@@ -43,7 +43,7 @@ public class ReactionTracker implements River.PacketListener {
 
     Map<String, Object> reactionTracker = new HashMap<>();
     HashMap<String, Object> attributes = new HashMap<>();
-    attributes.put("user_likelyhood", users.get(userId).get(solutionID) / allClicksFrom(userId));
+    attributes.put("user_likelihood", users.get(userId).get(solutionID) / allClicksFrom(userId));
     attributes.put("solution_id", solutionID);
     reactionTracker.put("user_tracker", attributes);
     connection.publish(new Packet(reactionTracker).toJson());

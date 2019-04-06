@@ -16,7 +16,7 @@ public class MembershipSolution implements River.PacketListener {
 
   private static String SOLUTION_ID = UUID.randomUUID().toString();
   private int baseRevenue = new Random().nextInt();
-  private Double baseLikelyhood = new Random().nextDouble();
+  private Double baseLikelihood = new Random().nextDouble();
 
   public static void main(String[] args) {
     String host = args[0];
@@ -64,7 +64,7 @@ public class MembershipSolution implements River.PacketListener {
     }
 
     return NeedPacket.enrichWithSolution(packet,
-        baseLikelyhood * likelyhoodFromMember, abs(baseRevenue) % revenueFromMember,
+        baseLikelihood * likelyhoodFromMember, abs(baseRevenue) % revenueFromMember,
         SOLUTION_ID);
   }
 
